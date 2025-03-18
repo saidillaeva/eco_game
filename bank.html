@@ -5,14 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Банк мусора</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        /* Фон на весь экран */
+        body {
+            background: url('assets/images/bank_bg.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Контейнер игры */
+        .game-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #fff;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        /* Кнопка "В меню" в правом верхнем углу */
+        .menu-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: linear-gradient(to right, #ff9f43, #ff6b6b);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        .menu-button:hover {
+            background: linear-gradient(to right, #ff6b6b, #ee5253);
+            transform: scale(1.1);
+        }
+
+        /* Контейнер для игры */
+        #game {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
 </head>
 <body>
 
     <div class="game-container">
         <h1>🏦 Банк мусора</h1>
-        <p>Собирай нужные виды мусора и приноси в банк!</p>
-        <button onclick="goToMenu()">🔙 В меню</button>
+        <button class="menu-button" onclick="goToMenu()">🔙 В меню</button>
+        <div id="game"></div>
     </div>
 
     <script>
@@ -21,7 +88,19 @@
         }
     </script>
 
-    <script src="src/scenes/BankScene.js"></script>
+    <script type="module">
+        import BankScene from "./src/scenes/BankScene.js";
+
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: [BankScene],
+            parent: "game"
+        };
+
+        const game = new Phaser.Game(config);
+    </script>
 
 </body>
 </html>
