@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Очистка океана</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>🌊 Очистка океана</h1>
+        <p>Лови мусор и очищай воду!</p>
+        <button onclick="goToMenu()">🔙 В меню</button>
+    </div>
+
+    <script>
+        function goToMenu() {
+            window.location.href = "game.html";
+        }
+    </script>
+
+    <script src="src/scenes/OceanScene.js"></script>
+
+</body>
+</html>
