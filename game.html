@@ -3,54 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Экологическая игра</title>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <title>🌿 Выберите игру 🌍</title>
+    
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background: url('assets/images/game_bg.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.7);
+            width: 90%;
+            max-width: 950px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 42px;
+            text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            animation: bounceIn 1s ease-in-out;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .game-card img {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 10px;
+        }
+
+        .game-card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .game-card button {
+            background: linear-gradient(to right, #32CD32, #228B22);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card button:hover {
+            background: linear-gradient(to right, #228B22, #006400);
+            transform: scale(1.05);
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            background: linear-gradient(to right, #FF6347, #FF4500);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(to right, #FF4500, #B22222);
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <h1>🌿 Выберите игру 🌍</h1>
+        
         <div class="game-grid">
-            <div class="game-card sorting">
+            <div class="game-card">
                 <img src="assets/images/sorting.png" alt="Сортировка мусора">
                 <h2>Сортировка мусора</h2>
                 <button onclick="startGame('sorting')">🎮 Играть</button>
             </div>
 
-            <div class="game-card bank">
+            <div class="game-card">
                 <img src="assets/images/bank.png" alt="Банк мусора">
                 <h2>Банк мусора</h2>
                 <button onclick="startGame('bank')">🎮 Играть</button>
             </div>
 
-            <div class="game-card labyrinth">
+            <div class="game-card">
                 <img src="assets/images/labyrinth.png" alt="Лабиринт">
                 <h2>Лабиринт</h2>
                 <button onclick="startGame('labyrinth')">🎮 Играть</button>
             </div>
+        </div>
 
-            <div class="game-card monster">
+        <div class="row">
+            <div class="game-card">
                 <img src="assets/images/monster.png" alt="Побег от монстра">
                 <h2>Побег от мусорного монстра</h2>
                 <button onclick="startGame('monster')">🎮 Играть</button>
             </div>
 
-            <div class="game-card ocean">
+            <div class="game-card">
                 <img src="assets/images/ocean.png" alt="Очистка океана">
                 <h2>Очистка океана</h2>
                 <button onclick="startGame('ocean')">🎮 Играть</button>
             </div>
         </div>
+
+        <button class="back-button" onclick="goToMain()">🏠 Вернуться на главную</button>
     </div>
 
     <script>
         function startGame(game) {
-            window.location.href = game + ".html"; // Переход на соответствующую игру
+            window.location.href = game + ".html";
+        }
+
+        function goToMain() {
+            window.location.href = "index.html";
         }
     </script>
-
-    <script src="src/game.js"></script>
 
 </body>
 </html>
