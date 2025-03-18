@@ -8,6 +8,49 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <div class="container">
+        <h1>🌿 Выберите игру 🌍</h1>
+        <div class="game-grid">
+            <div class="game-card sorting">
+                <img src="assets/images/sorting.png" alt="Сортировка мусора">
+                <h2>Сортировка мусора</h2>
+                <button onclick="startGame('sorting')">🎮 Играть</button>
+            </div>
+
+            <div class="game-card bank">
+                <img src="assets/images/bank.png" alt="Банк мусора">
+                <h2>Банк мусора</h2>
+                <button onclick="startGame('bank')">🎮 Играть</button>
+            </div>
+
+            <div class="game-card labyrinth">
+                <img src="assets/images/labyrinth.png" alt="Лабиринт">
+                <h2>Лабиринт</h2>
+                <button onclick="startGame('labyrinth')">🎮 Играть</button>
+            </div>
+
+            <div class="game-card monster">
+                <img src="assets/images/monster.png" alt="Побег от монстра">
+                <h2>Побег от мусорного монстра</h2>
+                <button onclick="startGame('monster')">🎮 Играть</button>
+            </div>
+
+            <div class="game-card ocean">
+                <img src="assets/images/ocean.png" alt="Очистка океана">
+                <h2>Очистка океана</h2>
+                <button onclick="startGame('ocean')">🎮 Играть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startGame(game) {
+            window.location.href = game + ".html"; // Переход на соответствующую игру
+        }
+    </script>
+
     <script src="src/game.js"></script>
+
 </body>
 </html>

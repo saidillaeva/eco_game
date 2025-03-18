@@ -1,7 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     text-align: center;
-    background: linear-gradient(to right, #4CAF50, #8BC34A);
+    background: url('assets/images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: white;
     margin: 0;
     padding: 0;
@@ -9,33 +10,116 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    flex-direction: column;
 }
 
 .container {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    width: 80%;
-    max-width: 500px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 900px;
+    backdrop-filter: blur(5px);
 }
 
 h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 42px;
+    margin-bottom: 25px;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
 }
 
-button {
-    background-color: #FFD700;
-    color: #333;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
+/* Грид 3 сверху, 2 снизу по центру */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Нижние 2 карточки центрируются */
+.game-grid .game-card:nth-child(4),
+.game-grid .game-card:nth-child(5) {
+    grid-column: span 1;
+    justify-self: center;
+}
+
+/* Красивый дизайн карточек */
+.game-card {
+    background: linear-gradient(135deg, #f3a683, #ff7979);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
-    transition: 0.3s;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+    transform: scale(1);
+    width: 220px;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+}
+
+.game-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* Уникальные цвета карточек */
+.sorting { background: linear-gradient(135deg, #ff9ff3, #f368e0); }
+.bank { background: linear-gradient(135deg, #feca57, #ff9f43); }
+.labyrinth { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
+.monster { background: linear-gradient(135deg, #54a0ff, #2e86de); }
+.ocean { background: linear-gradient(135deg, #5f27cd, #341f97); }
+
+.game-card img {
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+/* Заголовки карточек */
+.game-card h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+/* Кнопки */
+button {
+    background: linear-gradient(to right, #ff9f43, #ff6b6b);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
 }
 
 button:hover {
-    background-color: #FFC107;
+    background: linear-gradient(to right, #ff6b6b, #ee5253);
+    transform: scale(1.08);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Медиа-запрос: если экран меньше 768px, карточки идут в 2 колонки */
+@media (max-width: 768px) {
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Медиа-запрос для мобильных (телефоны) */
+@media (max-width: 500px) {
+    .game-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
