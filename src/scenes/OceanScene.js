@@ -2,126 +2,150 @@ export default class OceanScene extends Phaser.Scene {
     constructor() {
         super({ key: "OceanScene" });
         this.score = 0;
+        this.timeLeft = 30;
+        this.gameOver = false;
     }
 
     preload() {
-        // Загружаем изображения
         this.load.image("ocean_bg", "assets/images/ocean.png");
-        this.load.image("boatt", "assets/images/boat.png");
-        this.load.image("hook", "assets/images/hook.png"); // Крюк
-        this.load.image("rope", "assets/images/rope.png"); // Веревка
+        this.load.image("boat", "assets/images/boat.png");
         this.load.image("plastic", "assets/images/rubbish_paper.png");
         this.load.image("trash", "assets/images/trash_bag.png");
     }
 
     create() {
+        this.gameWidth = this.scale.width;
+        this.gameHeight = this.scale.height;
+
         // Фон
-        this.add.image(400, 300, "ocean_bg").setScale(1.1);
+        this.bg = this.add.image(0, 0, "ocean_bg").setOrigin(0).setDisplaySize(this.gameWidth, this.gameHeight);
 
         // Лодка
-        this.player = this.physics.add.sprite(400, 500, "boat").setCollideWorldBounds(true);
-
-        // Верёвка (изначально невидима)
-        this.rope = this.add.sprite(this.player.x, this.player.y + 30, "rope").setOrigin(0.5, 0);
-        this.rope.setScale(1, 0.1);
-        this.rope.setAlpha(0);
-
-        // Крюк
-        this.hook = this.add.sprite(this.player.x, this.player.y + 30, "hook").setOrigin(0.5, 0);
-        this.hook.setScale(0.5);
-        this.hook.setAlpha(0); // Крюк невидимый в начале
+        this.player = this.physics.add.sprite(this.gameWidth / 2, this.gameHeight - 100, "boat").setScale(0.03);
+        this.player.setCollideWorldBounds(true);
 
         // Группа мусора
         this.trashGroup = this.physics.add.group();
 
-        // Управление
-        this.cursors = this.input.keyboard.createCursorKeys();
+        // Управление лодкой (движение за курсором)
+        this.input.on("pointermove", (pointer) => {
+            if (!this.gameOver) {
+                this.player.x = pointer.x;
+            }
+        });
 
         // Таймер появления мусора
-        this.time.addEvent({
-            delay: 2000,
+        this.trashTimer = this.time.addEvent({
+            delay: 200,
             callback: this.spawnTrash,
             callbackScope: this,
             loop: true
         });
 
-        // Запускаем крюк при нажатии на пробел
-        this.input.keyboard.on("keydown-SPACE", () => this.useHook());
+        // Столкновение мусора и лодки
+        this.physics.add.overlap(this.player, this.trashGroup, this.collectTrash, null, this);
+
+        // Таймер игры
+        this.timerText = this.add.text(20, 50, `Время: ${this.timeLeft}`, { fontSize: "24px", fill: "#fff" });
+        this.timer = this.time.addEvent({
+            delay: 1000,
+            callback: this.updateTimer,
+            callbackScope: this,
+            loop: true
+        });
 
         // Текст очков
         this.scoreText = this.add.text(20, 20, "Очки: 0", { fontSize: "24px", fill: "#fff" });
+
+        // **Кнопка выхода из игры**
+        this.exitButton = this.add.text(this.gameWidth - 150, 20, "❌ Выйти", {
+            fontSize: "20px",
+            fill: "#fff",
+            backgroundColor: "#ff4444",
+            padding: { x: 10, y: 5 }
+        })
+        .setInteractive()
+        .on("pointerdown", () => {
+            window.location.href = "game.html"; // Переносит на главную страницу
+        });
     }
 
     update() {
-        // Двигаем лодку
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-200);
-        } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(200);
-        } else {
-            this.player.setVelocityX(0);
-        }
+        if (this.gameOver) return;
 
-        // Веревка и крюк всегда следуют за лодкой, если не активны
-        if (this.hook.alpha === 0) {
-            this.rope.x = this.player.x;
-            this.hook.x = this.player.x;
-        }
-    }
-
-    // Анимация крюка с верёвкой (вытягивание и возврат)
-    useHook() {
-        if (this.hook.alpha === 1) return; // Если крюк уже вытягивается, пропускаем
-
-        this.hook.setAlpha(1);
-        this.rope.setAlpha(1);
-        this.rope.setScale(1, 0.1);
-
-        // Вытягиваем веревку вниз
-        this.tweens.add({
-            targets: [this.rope, this.hook],
-            scaleY: 1, // Удлиняем вниз
-            duration: 500,
-            ease: "Power2",
-            onComplete: () => {
-                this.checkForTrash(); // Проверяем, зацепил ли крюк мусор
-
-                // Возвращаем крюк обратно
-                this.tweens.add({
-                    targets: [this.rope, this.hook],
-                    scaleY: 0.1,
-                    duration: 300,
-                    ease: "Power2",
-                    onComplete: () => {
-                        this.hook.setAlpha(0);
-                        this.rope.setAlpha(0);
-                    }
-                });
+        // Проверяем, пропустил ли игрок мусор
+        this.trashGroup.children.each((trash) => {
+            if (trash.y > this.gameHeight + 50) {
+                this.missTrash(trash);
             }
         });
     }
 
-    // Проверяем, зацепил ли крюк мусор
-    checkForTrash() {
-        this.trashGroup.children.iterate((trash) => {
-            if (Phaser.Math.Distance.Between(this.hook.x, this.hook.y + this.hook.height, trash.x, trash.y) < 50) {
-                trash.destroy(); // Убираем мусор
-                this.score += 10;
-                this.scoreText.setText(`Очки: ${this.score}`);
-            }
-        });
+    collectTrash(player, trash) {
+        trash.destroy();
+        this.score += 10;
+        this.scoreText.setText(`Очки: ${this.score}`);
     }
 
-    // Создаём мусор
     spawnTrash() {
-        let x = Phaser.Math.Between(50, 750);
-        let trashType = Phaser.Math.RND.pick(["plastic", "trash"]);
-        
-        let trash = this.trashGroup.create(x, Phaser.Math.Between(50, 300), trashType);
-        trash.setScale(0.3); // Уменьшает размер мусора
-        trash.setOrigin(0.5, 0.5); // Центрирует точку опоры
-        trash.setVelocityY(50);
-    }
-    
-}
+        if (this.gameOver) return;
 
+        let x = Phaser.Math.Between(50, this.gameWidth - 50);
+        let trashType = Phaser.Math.RND.pick(["plastic", "trash"]);
+
+        let trash = this.trashGroup.create(x, 50, trashType);
+        trash.setScale(0.09);
+        trash.setVelocityY(100);
+    }
+
+    missTrash(trash) {
+        if (trash.active) {
+            trash.destroy();
+            this.score -= 5;
+            this.scoreText.setText(`Очки: ${this.score}`);
+        }
+    }
+
+    updateTimer() {
+        if (this.timeLeft > 0) {
+            this.timeLeft--;
+            this.timerText.setText(`Время: ${this.timeLeft}`);
+        } else {
+            this.endGame();
+        }
+    }
+
+    endGame() {
+        this.gameOver = true;
+        this.physics.pause();
+        this.trashTimer.remove();
+
+        let overlay = this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, 400, 200, 0x000000, 0.8);
+        overlay.setDepth(1);
+
+        let gameOverText = this.add.text(this.gameWidth / 2 - 80, this.gameHeight / 2 - 40, "Время вышло!", { fontSize: "28px", fill: "#fff" });
+        gameOverText.setDepth(2);
+
+        let finalScoreText = this.add.text(this.gameWidth / 2 - 80, this.gameHeight / 2, `Очки: ${this.score}`, { fontSize: "24px", fill: "#fff" });
+        finalScoreText.setDepth(2);
+
+        let restartButton = this.add.text(this.gameWidth / 2 - 60, this.gameHeight / 2 + 40, "🔄 Начать заново", {
+            fontSize: "20px",
+            fill: "#fff",
+            backgroundColor: "#44aa44",
+            padding: { x: 10, y: 5 }
+        })
+        .setInteractive()
+        .setDepth(2)
+        .on("pointerdown", () => {
+            this.restartGame();
+        });
+    }
+
+    restartGame() {
+        this.scene.restart();
+        this.gameOver = false;
+        this.score = 0;
+        this.timeLeft = 30;
+    }
+}
