@@ -4,21 +4,28 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        // Загружаем фон и кнопки
-        this.load.image('menu_bg', 'assets/images/menu_bg.jpg'); // Фон
-        this.load.image('play_button', 'assets/images/play_button.png'); // Кнопка "Играть"
-        this.load.image('exit_button', 'assets/images/exit_button.png'); // Кнопка "Выход"
+
+        this.load.image('menu_bg', 'assets/images/menu_bg.jpg'); 
+        this.load.image('play_button', 'assets/images/play_button.png');
+        this.load.image('exit_button', 'assets/images/exit_button.png'); 
+
+       
+        this.load.audio("menu_music", "assets/sounds/mainback.mp3");
     }
 
     create() {
-        // Добавляем фон
+      
         this.add.image(400, 300, 'menu_bg').setScale(1.1);
 
-        // Создаем кнопку "Играть"
+       
+        this.menuMusic = this.sound.add('menu_music', { loop: true, volume: 0.3 });
+        this.menuMusic.play();
+
+        
         let playButton = this.add.image(400, 250, 'play_button').setInteractive();
         let exitButton = this.add.image(400, 350, 'exit_button').setInteractive();
 
-        // Анимация кнопки при наведении
+     
         playButton.on('pointerover', () => {
             playButton.setScale(1.1);
         });
@@ -26,17 +33,17 @@ export default class MenuScene extends Phaser.Scene {
             playButton.setScale(1);
         });
 
-        // Клик по кнопке "Играть"
+       
         playButton.on('pointerdown', () => {
-            this.scene.start('GameScene'); // Переход в игровую сцену
+            this.menuMusic.stop(); 
+            this.scene.start('GameScene'); 
         });
 
-        // Клик по кнопке "Выход"
+        
         exitButton.on('pointerdown', () => {
-            window.close(); // Закрытие игры
+            this.menuMusic.stop(); 
+            window.close(); 
         });
-
-        // Анимация кнопки "Выход"
         exitButton.on('pointerover', () => {
             exitButton.setScale(1.1);
         });

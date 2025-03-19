@@ -29,7 +29,7 @@ h1 {
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
 }
 
-/* Грид 3 сверху, 2 снизу по центру */
+
 .game-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -38,14 +38,14 @@ h1 {
     align-items: center;
 }
 
-/* Нижние 2 карточки центрируются */
+
 .game-grid .game-card:nth-child(4),
 .game-grid .game-card:nth-child(5) {
     grid-column: span 1;
     justify-self: center;
 }
 
-/* Красивый дизайн карточек */
+
 .game-card {
     background: linear-gradient(135deg, #f3a683, #ff7979);
     border-radius: 20px;
@@ -70,7 +70,7 @@ h1 {
     box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* Уникальные цвета карточек */
+
 .sorting { background: linear-gradient(135deg, #ff9ff3, #f368e0); }
 .bank { background: linear-gradient(135deg, #feca57, #ff9f43); }
 .labyrinth { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
@@ -84,13 +84,12 @@ h1 {
     margin-bottom: 12px;
 }
 
-/* Заголовки карточек */
 .game-card h2 {
     font-size: 20px;
     margin-bottom: 8px;
 }
 
-/* Кнопки */
+
 button {
     background: linear-gradient(to right, #ff9f43, #ff6b6b);
     color: white;
@@ -110,14 +109,14 @@ button:hover {
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Медиа-запрос: если экран меньше 768px, карточки идут в 2 колонки */
+
 @media (max-width: 768px) {
     .game-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Медиа-запрос для мобильных (телефоны) */
+
 @media (max-width: 500px) {
     .game-grid {
         grid-template-columns: repeat(1, 1fr);

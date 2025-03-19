@@ -6,7 +6,6 @@
     <title>🌿 Эко-Герои! 🌍</title>
 
     <style>
-        /* 📌 Общие стили */
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             text-align: center;
@@ -22,7 +21,6 @@
             flex-direction: column;
         }
 
-        /* 📌 Контейнер */
         .container {
             background: rgba(0, 0, 0, 0.5); /* Прозрачность */
             padding: 40px;
@@ -34,7 +32,6 @@
             animation: fadeIn 1s ease-in-out;
         }
 
-        /* 📌 Заголовок */
         h1 {
             font-size: 46px;
             text-shadow: 4px 4px 10px rgba(255, 255, 255, 0.9);
@@ -42,7 +39,6 @@
             animation: bounceIn 1s ease-in-out;
         }
 
-        /* 📌 Текст */
         p {
             font-size: 22px;
             color: #FFD700;
@@ -52,7 +48,6 @@
             animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* 📌 Кнопка "Начать приключение" */
         button {
             background: linear-gradient(to right, #4CAF50, #2E8B57);
             color: white;
@@ -73,7 +68,6 @@
             box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* 📌 Анимации */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -95,7 +89,7 @@
 
     <script>
         document.getElementById('start-game').addEventListener('click', function() {
-            window.location.href = "game.html"; // Переход на страницу с играми
+            window.location.href = "game.html";
         });
     </script>
 

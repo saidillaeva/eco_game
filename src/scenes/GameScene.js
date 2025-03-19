@@ -4,16 +4,26 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        // Загружаем фон и кнопки
-        this.load.image('game_bg', 'assets/images/game_bg.png'); // Фон
-        this.load.image('back_button', 'assets/images/back_button.png'); // Кнопка "Назад"
+    
+        this.load.image('game_bg', 'assets/images/game_bg.png'); 
+        this.load.image('back_button', 'assets/images/back_button.png'); 
+
+    
+        this.load.audio('game_music', 'assets/sounds/mainback.mp3');
     }
 
     create() {
-        // Добавляем фон
+      
         this.add.image(400, 300, 'game_bg').setScale(1.1);
 
-        // Заголовок
+       
+        this.gameMusic = this.sound.add('game_music', { loop: true, volume: 0.5 });
+        this.gameMusic.play();
+        
+      
+
+
+        
         this.add.text(200, 100, "Выберите мини-игру", {
             fontSize: '32px',
             fill: '#FFD700',
@@ -23,7 +33,7 @@ export default class GameScene extends Phaser.Scene {
             strokeThickness: 4
         });
 
-        // Кнопка "Перейти к играм" (ведёт в game.html)
+        
         let gameButton = this.add.text(300, 250, '🎮 Перейти к играм', {
             fontSize: '26px',
             fill: '#FFF',
@@ -40,6 +50,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         gameButton.on('pointerdown', () => {
+            this.gameMusic.stop(); 
             window.location.href = "game.html";
         });
 
@@ -54,6 +65,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         backButton.on('pointerdown', () => {
+            this.gameMusic.stop(); 
             this.scene.start('MenuScene');
         });
     }
