@@ -5,23 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Очистка океана</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('assets/images/ocean.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <h1>🌊 Очистка океана</h1>
-        <p>Лови мусор и очищай воду!</p>
-        <button onclick="goToMenu()">🔙 В меню</button>
-    </div>
+    <div id="game"></div>
 
-    <script>
-        function goToMenu() {
-            window.location.href = "game.html";
-        }
+    <script type="module">
+        import OceanScene from "./src/scenes/OceanScene.js";
+
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            parent: "game",
+            physics: {
+                default: "arcade",
+                arcade: {
+                    gravity: { y: 0 },
+                    debug: false
+                }
+            },
+            scene: [OceanScene]
+        };
+
+        new Phaser.Game(config);
     </script>
-
-    <script src="src/scenes/OceanScene.js"></script>
 
 </body>
 </html>
